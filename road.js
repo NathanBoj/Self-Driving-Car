@@ -25,7 +25,7 @@ class Road{
         //     line(border[0].x, border[0].y, border[1].x, border[1].y)
         // });
 
-        fill(180, 180, 180)
+        fill(180, 180, 180) //Outside Segments filled with grey
         beginShape()
         for(let i = 0; i < 14; i++){
                 vertex(this.roadSegments[i][0].x, this.roadSegments[i][0].y)
@@ -33,14 +33,13 @@ class Road{
         }
         endShape()
 
-        fill(34, 130, 21)
+        fill(34, 130, 21) //inside segments filled with same green as background
         beginShape()
         for(let i = 14; i < 26; i++){
                 vertex(this.roadSegments[i][0].x, this.roadSegments[i][0].y)
                 vertex(this.roadSegments[i][1].x, this.roadSegments[i][1].y)
         }
         endShape()
-        
 
         
     }
