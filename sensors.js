@@ -26,14 +26,41 @@ class Sensor{
 
     show = function(){
         for(let i = 0; i < this.numRays; i++){
+            let end = this.rays[i][1]
+            if(this.readings[i]){
+                end = this.readings[i]
+            }
+
             stroke(100, 149, 227)
             strokeWeight(2)
-            line(this.rays[i][0].x, this.rays[i][0].y, this.rays[i][1].x, this.rays[i][1].y)
+            line(this.rays[i][0].x, this.rays[i][0].y, end.x, end.y)
         }
     }
 
     getReadings = function(ray, roadSegments){
-        return
+        
+        let touches = []
+
+        for(let i=0; i < roadSegments.length; i++){
+            const touch = getIntersect(
+                ray[0],
+                ray[1],
+                roadSegments[i][0],
+                roadSegments[i][1]
+            )
+
+            if (touch){
+                touches.push(touch)
+            }
+        }
+
+        if(touches.length == 0){
+            return null
+        }else{
+            const offsets = touches.map(e => e.offset)
+            const minOffset = Math.min(...offsets)
+            return touches.find(e=>e.offset == minOffset)
+        }
     }
 
     castRays = function(){
