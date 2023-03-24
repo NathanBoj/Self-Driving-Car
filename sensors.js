@@ -33,7 +33,22 @@ class Sensor{
 
             stroke(100, 149, 227)
             strokeWeight(2)
-            line(this.rays[i][0].x, this.rays[i][0].y, end.x, end.y)
+            // line(this.rays[i][0].x, this.rays[i][0].y, end.x, end.y)
+            // stroke(214, 96, 114)
+            // line(this.rays[i][1].x, this.rays[i][1].y, end.x, end.y)
+
+            beginShape()
+            vertex(this.rays[i][0].x, this.rays[i][0].y)
+            vertex(end.x, end.y)
+            endShape()
+
+            stroke(214, 96, 114)
+            beginShape()
+            vertex(end.x, end.y)
+            vertex(this.rays[i][1].x, this.rays[i][1].y)
+            endShape()
+
+            console.log(i + ' ' + (end.x-this.rays[i][1].x) + ', ' + (end.y - this.rays[i][1].y))
         }
     }
 
