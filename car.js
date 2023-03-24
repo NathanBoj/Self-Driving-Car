@@ -10,6 +10,7 @@ class Car{
         this.centerX = this.x + this.w/2
         this.centerY = this.y + this.h/2
 
+        this.sensor = new Sensor(this)
         this.controls = new Controls()
 
         this.speed = 0
@@ -49,6 +50,8 @@ class Car{
         
         pop()
 
+        this.sensor.show()
+
         // stroke(0)
         // line(this.centerX, 0, this.centerX, height)
         // line(0, this.centerY, width, this.centerY)
@@ -57,6 +60,7 @@ class Car{
     update = function(lineSegments){
         if(!this.crashed){
             this.move()
+            this.sensor.update(lineSegments)
             this.polygon = this.createPolygon()
             this.crashed = this.checkCrash(lineSegments)
         }
