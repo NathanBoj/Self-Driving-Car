@@ -55,9 +55,11 @@ class Car{
     }
 
     update = function(lineSegments){
-        this.move()
-        this.polygon = this.createPolygon()
-        this.crashed = this.checkCrash(lineSegments)
+        if(!this.crashed){
+            this.move()
+            this.polygon = this.createPolygon()
+            this.crashed = this.checkCrash(lineSegments)
+        }
 
         // this.drawPoly(this.polygon)
     }
