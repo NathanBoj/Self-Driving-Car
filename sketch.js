@@ -23,10 +23,19 @@ function setup(){
     carH = carW*carimg.height/carimg.width
     carimg.resize(carW, carH)
 
-    cars = generateCars(50)
+    n = 1
+    cars = generateCars(n)
     let bestCar = cars[0]
 
     if(localStorage.getItem("bestBrain")){
+        for(let i = 0; i < cars.length; i++){
+            cars[i].brain = JSON.parse(
+                localStorage.getItem("bestBrain")
+            )
+            if(i != 0){
+                NeuralNetwork.mutate(cars[i].brain, 0.2)
+            }
+        }
         bestCar.brain = JSON.parse(
             localStorage.getItem("bestBrain")
         )
@@ -79,7 +88,7 @@ function draw(){
 
     bestCar.show('best', true)
 
-    checkpoints.show()
+    // checkpoints.show()
     
 
     // stroke(0)
