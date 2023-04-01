@@ -7,6 +7,15 @@ function preload(){
     carimg = loadImage('assets/car.png')
 }
 
+function saveCar(){
+    localStorage.setItem("bestBrain",
+    JSON.stringify(bestCar.brain))
+}
+
+function discardCar(){
+    localStorage.removeItem("bestBrain")
+}
+
 function setup(){
     createCanvas(windowWidth*0.9, windowHeight*0.9).parent("gameCont")
     carW = 30
@@ -18,17 +27,46 @@ function setup(){
     // console.log(carimg)
     road = new Road(roadLines)
     checkpoints = new Checkpoint(checkpointLines)
-    car = new Car(carimg, "KEYS")
+    car = new Car(carimg, "AI")
+    crossed = car.crossed
+    bestCar = car
+    
+    if(localStorage.getItem("bestBrain")){
+        bestCar.brain = JSON.parse(
+            localStorage.getItem("bestBrain")
+        )
+    }
+
+    saveBtn = createButton('Save')
+    saveBtn.position(width/2, 100)
+    saveBtn.mousePressed(saveCar)
+
+    delBtn = createButton('Delete')
+    delBtn.position(width/2, 150)
+    delBtn.mousePressed(discardCar)
 }
 
 function draw(){
+    // console.log(bestCar)
+    
     background(34, 130, 21)
 
     car.update(road.roadSegments, checkpoints.chkPtSeg)
 
+    // bestCar = Math.max(bestCar.crossed, car.crossed)
+    // if(car.crossed > bestCar.crossed)
+
+    bestCar = [car, bestCar].find(
+        c=>c.crossed==Math.max(
+            ...[car, bestCar].map(c=>c.crossed)
+        )
+    )
+    
+
     road.show()
 
-    car.show()
+    // car.show()
+    bestCar.show()
 
     checkpoints.show()
     
@@ -45,4 +83,10 @@ function keyPressed(){
 
 function keyReleased(){
     car.controls.keyUp(key)
+}
+
+function mousePressed(){
+    coordText = '{x:'+int(mouseX)+', y:'+int(mouseY)+"}"
+    console.log(coordText)
+    // [{x: 320, y: 50}, {x: 400, y: 190}]
 }

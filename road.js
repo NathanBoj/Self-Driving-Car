@@ -6,7 +6,7 @@ class Road{
 
 
     show = function(){
-        stroke(255)
+        stroke(255,255,0)
         strokeJoin(ROUND)
         strokeWeight(3)
 
@@ -18,6 +18,7 @@ class Road{
         }
         endShape()
 
+        stroke(255,255,255)
         fill(34, 130, 21) //inside segments filled with same green as background
         beginShape()
         for(let i = 14; i < 26; i++){

@@ -58,7 +58,8 @@ class Car{
         
         pop()
 
-        this.sensor.show()
+        // this.drawPoly(this.polygon)
+        // this.sensor.show()
 
         // stroke(0)
         // line(this.centerX, 0, this.centerX, height)
@@ -87,28 +88,14 @@ class Car{
             this.crashed = this.checkCrash(roadSegments)
 
             this.checkChkpts(checkpoints)
-
-            // if(this.checkCrash(checkpoints)){
-            //     this.crossed += 1
-            //     console.log(this.crossed)
-            // }
-
-            // if(!this.onChkpt){
-            //     if(this.checkChkpts(checkpoints)){
-            //         this.onChkpt = true
-            //     }
-            // }else{
-            //     if(this.checkChkpts(checkpoints) == false){
-            //         this.onChkpt = false
-            //     }
-            // }
+            
         }
-
-        // this.drawPoly(this.polygon)
+    
+        
     }
 
     checkChkpts = function(lineSegments){
-        console.log(this.crossed)
+        // console.log(this.crossed)
 
         for(let i = 0; i < lineSegments.length; i++){
             if(polysIntersect(this.polygon, lineSegments[i])){
@@ -149,8 +136,8 @@ class Car{
             if(i == 3){
                 fill(0,255,255) //bottom left
             }
-
-            circle(elem.x, elem.y, 5)
+            noStroke()
+            circle(elem.x, elem.y, 10)
         });
     }
 
