@@ -17,17 +17,20 @@ function setup(){
     const endP1 = {x: width, y: height}
     // console.log(carimg)
     road = new Road(roadLines)
-    car = new Car(carimg, "AI")
+    checkpoints = new Checkpoint(checkpointLines)
+    car = new Car(carimg, "KEYS")
 }
 
 function draw(){
     background(34, 130, 21)
 
-    car.update(road.roadSegments)
+    car.update(road.roadSegments, checkpoints.chkPtSeg)
 
     road.show()
 
     car.show()
+
+    checkpoints.show()
     
 
     // stroke(0)

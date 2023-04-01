@@ -25,6 +25,9 @@ class Car{
 
         this.crashed = false
 
+        this.crossed = 0
+        this.onChkpt = false
+
         this.angle = 0
         this.turnRad = 0.03 //greater number means tighter turns
     }
@@ -62,16 +65,16 @@ class Car{
         // line(0, this.centerY, width, this.centerY)
     }
 
-    update = function(lineSegments){
+    update = function(roadSegments, checkpoints){
         if(!this.crashed){
             this.move()
 
-            this.sensor.update(lineSegments)
+            this.sensor.update(roadSegments)
             const offsets = this.sensor.readings.map(
                 s=>s==null?0:1-s.offset
             )
             const outputs = NeuralNetwork.feedForward(offsets, this.brain)
-            console.log(outputs)
+            // console.log(outputs)
 
             if(this.useBrain){
                 this.controls.fwd = outputs[0]
@@ -81,16 +84,50 @@ class Car{
             }
 
             this.polygon = this.createPolygon()
-            this.crashed = this.checkCrash(lineSegments)
+            this.crashed = this.checkCrash(roadSegments)
+
+            this.checkChkpts(checkpoints)
+
+            // if(this.checkCrash(checkpoints)){
+            //     this.crossed += 1
+            //     console.log(this.crossed)
+            // }
+
+            // if(!this.onChkpt){
+            //     if(this.checkChkpts(checkpoints)){
+            //         this.onChkpt = true
+            //     }
+            // }else{
+            //     if(this.checkChkpts(checkpoints) == false){
+            //         this.onChkpt = false
+            //     }
+            // }
         }
 
         // this.drawPoly(this.polygon)
+    }
+
+    checkChkpts = function(lineSegments){
+        console.log(this.crossed)
+
+        for(let i = 0; i < lineSegments.length; i++){
+            if(polysIntersect(this.polygon, lineSegments[i])){
+
+                this.crossed = i+1
+                this.onChkpt = true
+                return true
+            }
+        }
+        // }
+
+        return false
     }
 
 
     checkCrash = function(lineSegments){
         for(let i = 0; i < lineSegments.length; i++){
             if(polysIntersect(this.polygon, lineSegments[i])){
+                // console.log('crash')
                 return true
             }
         }
