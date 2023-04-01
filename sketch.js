@@ -3,6 +3,7 @@ let carimg
 let carW
 let carH
 
+
 function preload(){
     carimg = loadImage('assets/car.png')
 }
@@ -17,25 +18,28 @@ function discardCar(){
 }
 
 function setup(){
-    createCanvas(windowWidth*0.9, windowHeight*0.9).parent("gameCont")
+    var canvas = createCanvas(windowWidth*0.9, windowHeight*0.9).parent("gameCont")
     carW = 30
     carH = carW*carimg.height/carimg.width
     carimg.resize(carW, carH)
+
+    cars = generateCars(50)
+    let bestCar = cars[0]
+
+    if(localStorage.getItem("bestBrain")){
+        bestCar.brain = JSON.parse(
+            localStorage.getItem("bestBrain")
+        )
+    }
 
     const beginP1 = {x: 0, y: 0}
     const endP1 = {x: width, y: height}
     // console.log(carimg)
     road = new Road(roadLines)
     checkpoints = new Checkpoint(checkpointLines)
-    car = new Car(carimg, "AI")
-    crossed = car.crossed
-    bestCar = car
     
-    if(localStorage.getItem("bestBrain")){
-        bestCar.brain = JSON.parse(
-            localStorage.getItem("bestBrain")
-        )
-    }
+    
+    
 
     saveBtn = createButton('Save')
     saveBtn.position(width/2, 100)
@@ -51,14 +55,16 @@ function draw(){
     
     background(34, 130, 21)
 
-    car.update(road.roadSegments, checkpoints.chkPtSeg)
+    for (let i = 0; i < cars.length; i++) {
+        cars[i].update(road.roadSegments, checkpoints.chkPtSeg)
+    }
 
     // bestCar = Math.max(bestCar.crossed, car.crossed)
     // if(car.crossed > bestCar.crossed)
 
-    bestCar = [car, bestCar].find(
+    bestCar = cars.find(
         c=>c.crossed==Math.max(
-            ...[car, bestCar].map(c=>c.crossed)
+            ...cars.map(c=>c.crossed)
         )
     )
     
@@ -66,7 +72,12 @@ function draw(){
     road.show()
 
     // car.show()
-    bestCar.show()
+    // bestCar.show()
+    for (let i = 0; i < cars.length; i++) {
+        cars[i].show('regular')
+    }
+
+    bestCar.show('best', true)
 
     checkpoints.show()
     
@@ -89,4 +100,12 @@ function mousePressed(){
     coordText = '{x:'+int(mouseX)+', y:'+int(mouseY)+"}"
     console.log(coordText)
     // [{x: 320, y: 50}, {x: 400, y: 190}]
+}
+
+function generateCars(n){
+    const cars = []
+    for (let i = 0; i < n; i++) {
+        cars.push(new Car(carimg, "AI"))
+    }
+    return cars
 }

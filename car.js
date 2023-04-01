@@ -32,7 +32,7 @@ class Car{
         this.turnRad = 0.03 //greater number means tighter turns
     }
 
-    show = function(){
+    show = function(cartype, showSensor=false){
         fill(0, 0, 0, 0)
         // noStroke()
         stroke('yellow')
@@ -40,8 +40,12 @@ class Car{
         translate(this.x+this.w/2, this.y+this.h/2)
         rotate(-this.angle)
 
+        if(cartype == 'regular'){
+            tint(255, 127)
+        }
+
         if(this.crashed){
-            tint(0, 255, 0)
+            tint(0, 255, 0, 127)
             image(this.img, 0-this.w/2, 0-this.h/2)
         }else{
             image(this.img, 0-this.w/2, 0-this.h/2)
@@ -59,7 +63,9 @@ class Car{
         pop()
 
         // this.drawPoly(this.polygon)
-        // this.sensor.show()
+        if(showSensor){
+            this.sensor.show()
+        }
 
         // stroke(0)
         // line(this.centerX, 0, this.centerX, height)
@@ -95,7 +101,7 @@ class Car{
     }
 
     checkChkpts = function(lineSegments){
-        // console.log(this.crossed)
+        console.log(this.crossed)
 
         for(let i = 0; i < lineSegments.length; i++){
             if(polysIntersect(this.polygon, lineSegments[i])){

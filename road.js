@@ -27,6 +27,11 @@ class Road{
         }
         endShape()
 
+        stroke(255,0,0)
+        beginShape()
+        vertex(this.roadSegments[26][0].x, this.roadSegments[26][0].y)
+        vertex(this.roadSegments[26][1].x, this.roadSegments[26][1].y)
+        endShape()
         
     }
 }

@@ -24,7 +24,6 @@ class Checkpoint{
             vertex(this.chkPtSeg[i][1].x, this.chkPtSeg[i][1].y)
             endShape()
         }
-        
 
     }
 }
