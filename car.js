@@ -1,6 +1,6 @@
 class Car{
     
-    constructor(img){
+    constructor(img, controlType){
         this.img = img;
         this.w = this.img.width
         this.h = this.img.height
@@ -11,7 +11,12 @@ class Car{
         this.centerY = this.y + this.h/2
 
         this.sensor = new Sensor(this)
-        this.controls = new Controls()
+        this.brain = new NeuralNetwork(
+            [this.sensor.numRays, 6, 4]
+        )
+        this.controls = new Controls(controlType)
+
+        this.useBrain=controlType == 'AI'
 
         this.speed = 0
         this.acc = 0.2
@@ -60,7 +65,21 @@ class Car{
     update = function(lineSegments){
         if(!this.crashed){
             this.move()
+
             this.sensor.update(lineSegments)
+            const offsets = this.sensor.readings.map(
+                s=>s==null?0:1-s.offset
+            )
+            const outputs = NeuralNetwork.feedForward(offsets, this.brain)
+            console.log(outputs)
+
+            if(this.useBrain){
+                this.controls.fwd = outputs[0]
+                this.controls.left = outputs[1]
+                this.controls.right = outputs[2]
+                this.controls.rev = outputs[3]
+            }
+
             this.polygon = this.createPolygon()
             this.crashed = this.checkCrash(lineSegments)
         }

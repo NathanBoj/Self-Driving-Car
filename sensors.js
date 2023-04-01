@@ -48,7 +48,7 @@ class Sensor{
             vertex(this.rays[i][1].x, this.rays[i][1].y)
             endShape()
 
-            console.log(i + ' ' + (end.x-this.rays[i][1].x) + ', ' + (end.y - this.rays[i][1].y))
+            // console.log(i + ' ' + (end.x-this.rays[i][1].x) + ', ' + (end.y - this.rays[i][1].y))
         }
     }
 

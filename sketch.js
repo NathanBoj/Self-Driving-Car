@@ -17,7 +17,7 @@ function setup(){
     const endP1 = {x: width, y: height}
     // console.log(carimg)
     road = new Road(roadLines)
-    car = new Car(carimg)
+    car = new Car(carimg, "AI")
 }
 
 function draw(){

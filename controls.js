@@ -1,9 +1,16 @@
 class Controls{
-    constructor(){
+    constructor(type){
         this.fwd = false
         this.rev = false
         this.left = false
         this.right = false
+
+
+        // switch(type){
+        //     case "KEYS":
+                
+        // }
+
     }
 
     keyDown = function(key){
